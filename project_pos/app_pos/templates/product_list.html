@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Product List {% endblock %}
+
+{% block body_content %}
+<section class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">Product List</h1>
+      <a href="{% url 'product.create' %}" class="btn btn-sm btn-success">Add Product</a>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-responsive table-border">
+        <thead>
+          <tr>
+            <th>SNo</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th colspan="2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in products %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ data.product_title }}</td>
+            <td>{{ data.product_category.category_name }}</td>
+            <td>{{ data.product_price }}</td>
+            <td><a href="#" class="btn btn-sm btn-primary">Edit</a></td>
+            <td><a href="#" class="btn btn-sm btn-danger">Delete</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,25 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from app_pos.forms import ProductCreateForm
+from app_pos.models import Product
 # Create your views here.
-def demo(request):
-    return HttpResponse("This is a demo view from app_pos.")
-
-def index(request):
-    return render(request, "base.html")
-
 def customer(request):
     return render(request, "customer.html")
 
-def product(request):
+def product_list(request):
+    # fetching all products
+    db_data = Product.objects.all()
     context = {
-        'product_name': 'Wireless Mouse',
-        'price': 25.99,
-        'description': 'A high-precision wireless mouse with ergonomic design.'
+        "products": db_data
     }
-    return render(request, "product.html", context)
-
+    return render(request, "product_list.html", context)
 def product_create(request):
+    if request.method == "POST":
+        request_data = request.POST
+        db_data = ProductCreateForm(request_data)
+        if db_data.is_valid():
+            db_data.save()
+            return redirect("product.list")
+        else:
+            return redirect("product.create")
     create_form = ProductCreateForm()
     context = {
         "title": "Enter Your Product Details",
