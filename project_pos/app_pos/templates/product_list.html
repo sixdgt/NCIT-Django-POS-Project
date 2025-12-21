@@ -6,8 +6,19 @@
 <section class="container">
   <div class="card">
     <div class="card-header">
-      <h1 class="card-title">Product List</h1>
-      <a href="{% url 'product.create' %}" class="btn btn-sm btn-success">Add Product</a>
+      <h1 class="card-title text-center">Product List</h1>
+      <h3 class="text-center">Total Product: {{ products.count }}</h3>
+    <hr>
+    <h3 class="text-center d-flex justify-content-between mb-3">
+        <a href="{% url 'product.create' %}" class="btn btn-info btn-sm">Add New Product</a>
+        <form action="#" method="GET">
+            <div class="form-group d-flex flex-row gap-3">
+                <input type="text" name="search" class="form-control" placeholder="Search Product">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="{% url 'product.list' %}" class="btn btn-secondary">Clear</a>
+            </div>
+        </form>
+    </h3>
     </div>
     <div class="card-body">
       <table class="table table-hover table-responsive table-border">
@@ -17,7 +28,7 @@
             <th>Title</th>
             <th>Category</th>
             <th>Price</th>
-            <th colspan="2">Action</th>
+            <th colspan="3">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -27,8 +38,9 @@
             <td>{{ data.product_title }}</td>
             <td>{{ data.product_category.category_name }}</td>
             <td>{{ data.product_price }}</td>
-            <td><a href="#" class="btn btn-sm btn-primary">Edit</a></td>
-            <td><a href="#" class="btn btn-sm btn-danger">Delete</a></td>
+            <td><a href="{% url 'product.edit' pk=data.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+            <td><a href="{% url 'product.detail' pk=data.id %}" class="btn btn-sm btn-success">Detail</a></td>
+            <td><a href="{% url 'product.delete' pk=data.id %}" class="btn btn-sm btn-danger">Delete</a></td>
           </tr>
           {% endfor %}
         </tbody>
