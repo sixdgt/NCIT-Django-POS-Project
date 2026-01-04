@@ -3,10 +3,13 @@ from django.http import HttpResponse
 from app_pos.forms import ProductCreateForm
 from app_pos.models import Product
 from django.db.models import Q
-# Create your views here.
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 def customer(request):
     return render(request, "customer.html")
 
+@login_required(login_url="login")
 def product_list(request):
     # for searching data
     if request.method == "GET" and "search" in request.GET:
@@ -28,8 +31,10 @@ def product_create(request):
         db_data = ProductCreateForm(request_data)
         if db_data.is_valid():
             db_data.save()
+            messages.add_message(request, messages.SUCCESS, "Product added successfully!")
             return redirect("product.list")
         else:
+            messages.add_message(request, messages.ERROR, "Something went wrong!!")
             return redirect("product.create")
     create_form = ProductCreateForm()
     context = {
@@ -47,8 +52,10 @@ def product_edit(request, pk):
         update_data = ProductCreateForm(instance=db_data, data=request_data)
         if update_data.is_valid():
             update_data.save()
+            messages.add_message(request, messages.SUCCESS, "Product updated successfully!!")
             return redirect("product.list")
         else:
+            messages.add_message(request, messages.ERROR, "Something went wrong!!")
             return redirect("product.edit")
     return render(request, "product_edit.html", context)
 
@@ -61,6 +68,8 @@ def product_delete(request, pk):
     data = Product.objects.get(id=pk)
     try:
         data.delete()
+        messages.add_message(request, messages.WARNING, "Product deleted successfully!")
         return redirect("product.list")
     except Product.DoesNotExist:
+        messages.add_message(request, messages.ERROR, "Product not found")
         return redirect("product.list")

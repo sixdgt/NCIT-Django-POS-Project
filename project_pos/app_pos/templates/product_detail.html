@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Product Detail {% endblock %}
+
+{% block body_content %}
+<section class="container">
+    <h3>{{ title }}</h3>
+    <div class="card">
+        <div class="card-body">
+           <h1>{{ data.product_title }}</h1> 
+           <hr>
+           <h5>{{ data.product_category }}</h5>
+        </div>
+    </div>
+</section>
+{% endblock %}
