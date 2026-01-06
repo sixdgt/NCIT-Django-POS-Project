@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body_content %}
+<section class="container">
+    <div class="card p-5">
+        <div class="card-header">
+            <h2 class="card-title">Enter your registration details</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="form-group mb-2">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" 
+                    class="form-control" id="first_name" name="first_name" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" 
+                    class="form-control" id="last_name" name="last_name" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="email">Email:</label>
+                    <input type="email" 
+                    class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="username">Username:</label>
+                    <input type="text" 
+                    class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="password">Password:</label>
+                    <input type="password" 
+                    class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" 
+                    class="form-control" id="confirm_password" name="confirm_password" required>
+                </div>
+                <input type="submit" value="Register" class="btn btn-primary btn-sm mt-3">
+            </form>
+        </div>
+        <div class="card-footer">
+            <p>Already have an account? <a href="{% url 'login' %}" 
+                class="btn btn-sm btn-secondary">Go to login</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -25,6 +25,7 @@ def product_list(request):
             "products": db_data
         }
     return render(request, "product_list.html", context)
+@login_required(login_url="login")
 def product_create(request):
     if request.method == "POST":
         request_data = request.POST
@@ -43,6 +44,7 @@ def product_create(request):
     }
     return render(request, "product_create.html", context)
 
+@login_required(login_url="login")
 def product_edit(request, pk):
     db_data = Product.objects.get(id=pk)
     edit_data = ProductCreateForm(instance=db_data)
@@ -59,11 +61,13 @@ def product_edit(request, pk):
             return redirect("product.edit")
     return render(request, "product_edit.html", context)
 
+@login_required(login_url="login")
 def product_detail(request, pk):
     data = Product.objects.get(id=pk)
     context = {"title": "Product Details", "data": data}
     return render(request, "product_detail.html", context)
 
+@login_required(login_url="login")
 def product_delete(request, pk):
     data = Product.objects.get(id=pk)
     try:

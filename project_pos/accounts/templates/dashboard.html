@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block body_content %}
+<section class="container">
+    <div class="card p-5">
+        <div class="card-header">
+            <h2 class="card-title">Welcome to your Dashboard {{ user.first_name }}</h2>
+        </div>
+        <div class="card-body">
+            <p>This is your dashboard where you can manage your account and view your activities.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
