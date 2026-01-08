@@ -3,7 +3,24 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Create your views here.
+def send_custom_email(request, subject, message, recipient_list):
+    try:
+        send_mail(
+            subject, # email subject
+            message, # email body
+            settings.EMAIL_HOST_USER, #sender email
+            recipient_list, # receiver email
+            fail_silently=False
+        )
+        # this message depends on various cases; don't send unless its verification email/password reset/etc.
+        messages.add_message(request, messages.SUCCESS, "Email sent successfully!")
+    except Exception as e:
+        messages.add_message(request, messages.ERROR, f"Failed to send email: {e}")
+
 def login_view(request):
     if request.method == "POST":
         # taking inputs from form
@@ -42,6 +59,13 @@ def register_view(request):
                                             last_name=last_name, email=email,
                                               username=username, password=password)
             user.save()
+            # sending email
+            send_custom_email(
+                request,
+                'Account Creation',
+                'Your account has been created successfully.',
+                [email]
+            )
             messages.add_message(request, messages.SUCCESS, "Registration successful!! Please login.")
             return redirect("login")
         except:
