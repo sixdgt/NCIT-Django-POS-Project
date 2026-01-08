@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 
+{% load static %}
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
 {% block body_content %}
 <section class="container">
     <div class="card p-5">
-        <div class="card-header">
+        <div class="card-header" id="customCard">
             <h2 class="card-title">Welcome to your Dashboard {{ user.first_name }}</h2>
         </div>
         <div class="card-body">
@@ -12,4 +17,8 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
