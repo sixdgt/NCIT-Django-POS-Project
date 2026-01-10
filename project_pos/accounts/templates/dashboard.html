@@ -1,24 +1,112 @@
 {% extends 'base.html' %}
-{% block title %}Dashboard{% endblock %}
-
 {% load static %}
-{% block custom_css %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
+
+{% block title %}Dashboard | Django POS{% endblock %}
 
 {% block body_content %}
-<section class="container">
-    <div class="card p-5">
-        <div class="card-header" id="customCard">
-            <h2 class="card-title">Welcome to your Dashboard {{ user.first_name }}</h2>
+<div class="dashboard-wrapper py-5">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="fw-bold">Welcome back, {{ user.username|title }}! 👋</h2>
+                <p class="text-muted">Here is what's happening with your store today.</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p>This is your dashboard where you can manage your account and view your activities.</p>
+
+        {% if low_stock_count > 0 %}
+        <div class="alert alert-warning border-0 shadow-sm rounded-4 d-flex align-items-center mb-4">
+            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+            <div>
+                <strong>Inventory Alert:</strong> {{ low_stock_count }} items are running low on stock.
+                <a href="{% url 'product.list' %}" class="alert-link ms-2">View Inventory</a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card p-4 shadow-sm bg-white rounded-4">
+                    <div class="stat-icon bg-primary-soft text-primary"><i class="bi bi-currency-dollar"></i></div>
+                    <h3 class="fw-bold mb-0 mt-3">${{ total_revenue }}</h3>
+                    <p class="text-muted small">Lifetime Revenue</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'sales.report' %}" class="text-decoration-none">
+                    <div class="stat-card p-4 shadow-sm bg-white rounded-4 border-primary-hover">
+                        <div class="stat-icon bg-success-soft text-success"><i class="bi bi-cart-check"></i></div>
+                        <h3 class="fw-bold mb-0 mt-3">{{ orders_today }}</h3>
+                        <p class="text-muted small">Orders Today <i class="bi bi-arrow-right ms-1"></i></p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card p-4 shadow-sm bg-white rounded-4">
+                    <div class="stat-icon bg-info-soft text-info"><i class="bi bi-box-seam"></i></div>
+                    <h3 class="fw-bold mb-0 mt-3">{{ total_products }}</h3>
+                    <p class="text-muted small">Items in Stock</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card p-4 shadow-sm bg-white rounded-4">
+                    <div class="stat-icon bg-warning-soft text-warning"><i class="bi bi-exclamation-circle"></i></div>
+                    <h3 class="fw-bold mb-0 mt-3">{{ low_stock_count }}</h3>
+                    <p class="text-muted small">Low Stock Alerts</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm p-4 h-100 rounded-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Recent Transactions</h5>
+                        <a href="{% url 'sales.report' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sale in recent_transactions %}
+                                <tr>
+                                    <td>#{{ sale.id }}</td>
+                                    <td>{{ sale.transaction_date|date:"M d, H:i" }}</td>
+                                    <td class="fw-bold">${{ sale.grand_total }}</td>
+                                    <td><span class="badge bg-success-soft text-success rounded-pill px-3">Paid</span></td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4" class="text-center py-4">No transactions yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm p-4 h-100 rounded-4">
+                    <h5 class="fw-bold mb-4">Terminal Actions</h5>
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'pos.register' %}" class="btn btn-primary rounded-pill py-3 fw-bold shadow-sm">
+                            <i class="bi bi-cpu-fill me-2"></i> Open POS Register
+                        </a>
+                        <a href="{% url 'product.create' %}" class="btn btn-outline-dark rounded-pill py-2">
+                            <i class="bi bi-plus-circle me-2"></i> Add New Stock
+                        </a>
+                        <a href="{% url 'sales.report' %}" class="btn btn-outline-dark rounded-pill py-2">
+                            <i class="bi bi-graph-up-arrow me-2"></i> Detailed Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</section>
-{% endblock %}
-
-{% block custom_js %}
-<script src="{% static 'js/script.js' %}"></script>
+</div>
 {% endblock %}

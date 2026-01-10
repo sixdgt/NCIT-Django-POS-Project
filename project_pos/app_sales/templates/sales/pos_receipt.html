@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %} Receipt #{{ sale.id }} {% endblock %}
+
+{% block body_content %}
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg p-4" id="printableArea">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold mb-1">DJANGO POS SYSTEM</h3>
+                    <p class="text-muted small">123 Business Street, City, Country<br>
+                    Date: {{ sale.transaction_date|date:"M d, Y H:i" }}</p>
+                    <hr class="border-dashed">
+                    <h5 class="fw-bold">INVOICE #{{ sale.id }}</h5>
+                </div>
+
+                <table class="table table-sm table-borderless">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th>Item</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in sale.items.all %}
+                        <tr>
+                            <td>{{ item.product.product_title }}</td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-end">${{ item.total_price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center py-4 text-danger">
+                                Error: No items found for this record.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <hr class="border-dashed">
+                
+                <div class="border-top pt-3">
+                    <div class="d-flex justify-content-between small">
+                        <span>Subtotal</span>
+                        <span>${{ sale.subtotal }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between small">
+                        <span>Tax (10%)</span>
+                        <span>+ ${{ sale.tax_amount }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-danger small">
+                        <span>Discount</span>
+                        <span>- ${{ sale.discount_amount }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <h4 class="fw-bold">GRAND TOTAL</h4>
+                        <h4 class="fw-bold text-primary">${{ sale.grand_total }}</h4>
+                    </div>
+                    <div class="text-center border-top pt-2 mt-3">
+                        <small class="text-muted" style="font-size: 0.7rem;">
+                            Printed on: {% now "Y-m-d H:i:s" %}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4 no-print">
+                    <p class="text-muted small italic">Thank you for shopping with us!</p>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2 justify-content-center no-print">
+                <button onclick="window.print()" class="btn btn-dark rounded-pill px-4">
+                    <i class="bi bi-printer me-2"></i>Print Receipt
+                </button>
+                <a href="{% url 'pos.register' %}" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-cart-plus me-2"></i>New Sale
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @media print {
+        .no-print, .navbar, footer { display: none !important; }
+        .container { width: 100% !important; max-width: 100% !important; }
+        .card { box-shadow: none !important; border: none !important; }
+    }
+    .border-dashed { border-top: 1px dashed #dee2e6; opacity: 1; }
+</style>
+{% endblock %}

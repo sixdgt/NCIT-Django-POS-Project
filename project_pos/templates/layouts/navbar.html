@@ -1,31 +1,51 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">POS</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar shadow-sm">
+  <div class="container"> 
+    <a class="navbar-brand fw-bold" href="{% url 'landing' %}">
+      <span class="text-primary-accent">Django</span>POS
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
         {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'product.list' %}">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link px-3 fw-bold text-warning" href="{% url 'pos.register' %}">
+              <i class="bi bi-cpu-fill me-1"></i> POS Register
+            </a>
+          </li>
+          
+          <li class="nav-item"><a class="nav-link px-3" href="{% url 'dashboard' %}">Dashboard</a></li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown">
+              Stock
+            </a>
+            <ul class="dropdown-menu border-0 shadow-sm">
+              <li><a class="dropdown-item" href="{% url 'product.list' %}">Inventory List</a></li>
+              <li><a class="dropdown-item" href="{% url 'product.create' %}">Add Product</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle px-3" href="#" id="salesDropdown" role="button" data-bs-toggle="dropdown">
+              Reports
+            </a>
+            <ul class="dropdown-menu border-0 shadow-sm">
+              <li><a class="dropdown-item" href="{% url 'sales.report' %}">Daily Sales</a></li>
+              <li><a class="dropdown-item" href="{% url 'sales.history' %}">Transaction History</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-outline-light btn-sm rounded-pill px-4" href="{% url 'logout' %}">Logout</a>
+          </li>
         {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">Register</a>
-        </li>
+          <li class="nav-item"><a class="nav-link px-3" href="{% url 'login' %}">Login</a></li>
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-primary btn-sm rounded-pill px-4" href="{% url 'register' %}">Get Started</a>
+          </li>
         {% endif %}
       </ul>
     </div>

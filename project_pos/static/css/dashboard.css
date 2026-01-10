@@ -1,0 +1,53 @@
+/* dashboard.css */
+
+.dashboard-wrapper {
+    background-color: #f4f7f6; /* Subtle grey dashboard background */
+    min-height: 100vh;
+    padding-top: 80px; /* Space for Navbar */
+}
+
+/* Stat Cards */
+.stat-card {
+    background: #fff;
+    border-radius: 15px;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* Soft Color Badges & Icons */
+.bg-primary-soft { background: rgba(13, 110, 253, 0.1); }
+.bg-success-soft { background: rgba(25, 135, 84, 0.1); }
+.bg-info-soft    { background: rgba(13, 202, 240, 0.1); }
+.bg-warning-soft { background: rgba(255, 193, 7, 0.1); }
+
+.text-primary { color: #0d6efd !important; }
+.text-success { color: #198754 !important; }
+.text-info    { color: #0dcaf0 !important; }
+.text-warning { color: #ffc107 !important; }
+
+/* Table Styling */
+.table thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    border: none;
+}
+
+.badge {
+    font-weight: 500;
+}

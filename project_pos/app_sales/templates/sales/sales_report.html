@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %} Daily Sales Report {% endblock %}
+
+{% block body_content %}
+<section class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Daily Sales Report</h2>
+            <p class="text-muted">Overview for {{ today|date:"l, d M Y" }}</p>
+        </div>
+        <button onclick="window.print()" class="btn btn-outline-dark rounded-pill">
+            <i class="bi bi-download me-2"></i>Export PDF
+        </button>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center">
+                <div class="stat-icon bg-success-soft text-success mb-3 mx-auto">
+                    <i class="bi bi-currency-dollar fs-3"></i>
+                </div>
+                <h3 class="fw-bold">${{ total_revenue }}</h3>
+                <p class="text-muted mb-0">Total Revenue</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center">
+                <div class="stat-icon bg-primary-soft text-primary mb-3 mx-auto">
+                    <i class="bi bi-receipt fs-3"></i>
+                </div>
+                <h3 class="fw-bold">{{ total_transactions }}</h3>
+                <p class="text-muted mb-0">Transactions</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center">
+                <div class="stat-icon bg-info-soft text-info mb-3 mx-auto">
+                    <i class="bi bi-cart-check fs-3"></i>
+                </div>
+                <h3 class="fw-bold">{{ items_sold }}</h3>
+                <p class="text-muted mb-0">Items Sold</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">Today's Transactions</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Time</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th class="text-end pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in recent_sales %}
+                        <tr>
+                            <td class="ps-4 text-muted">#{{ sale.id }}</td>
+                            <td>{{ sale.transaction_date|date:"H:i" }}</td>
+                            <td>{{ sale.items.count }} products</td>
+                            <td class="fw-bold text-success">${{ sale.grand_total }}</td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'pos.receipt' sale.id %}" class="btn btn-sm btn-light rounded-pill">View Details</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">No sales recorded today yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

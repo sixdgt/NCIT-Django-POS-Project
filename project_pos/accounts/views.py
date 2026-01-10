@@ -5,6 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from app_pos.models import Product
+from app_sales.models import Sale, SaleItem
+from django.db.models import Sum
+from django.utils import timezone
 
 # Create your views here.
 def send_custom_email(request, subject, message, recipient_list):
@@ -80,4 +84,25 @@ def logout_view(request):
 
 @login_required(login_url='login')
 def dashboard_view(request):
-    return render(request, "dashboard.html")
+    today = timezone.now().date()
+    
+    # 1. Calculate Statistics
+    total_revenue = Sale.objects.aggregate(Sum('grand_total'))['grand_total__sum'] or 0
+    orders_today = Sale.objects.filter(transaction_date__date=today).count()
+    total_products = Product.objects.aggregate(Sum('product_quantity'))['product_quantity__sum'] or 0
+    
+    # 2. Get Recent Transactions
+    recent_transactions = Sale.objects.order_by('-transaction_date')[:5]
+    
+    # 3. Low Stock Alerts
+    low_stock_products = Product.objects.filter(product_quantity__lt=5)
+    
+    context = {
+        'total_revenue': total_revenue,
+        'orders_today': orders_today,
+        'total_products': total_products,
+        'recent_transactions': recent_transactions,
+        'low_stock_products': low_stock_products,
+        'low_stock_count': low_stock_products.count(),
+    }
+    return render(request, "dashboard.html", context)

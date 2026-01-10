@@ -1,10 +1,7 @@
 from django.urls import path
-from app_pos.views import customer, product_list, product_create, product_edit, product_delete, product_detail
+from app_pos.views import product_list, product_create, product_edit, product_delete, product_detail
 
 urlpatterns = [
-    # Define your app-specific URL patterns here
-    # customer CRUD
-    path('customer/', customer, name="customer"),
     # product CRUD
     path('product/list/', product_list, name="product.list"),
     path('product/create/', product_create, name="product.create"),

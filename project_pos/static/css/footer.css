@@ -1,0 +1,50 @@
+/* footer.css */
+
+.footer-full-width {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0; /* Let the inner container handle padding */
+    background-color: var(--primary-color-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle line like modern apps */
+    color: #ffffff;
+    font-family: var(--primary-font);
+}
+
+.footer-full-width {
+    display: block;
+    width: 100%;
+}
+
+.footer-brand {
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.text-primary-accent {
+    color: #3498db; /* Replace with your primary mid/light variable */
+}
+
+.copyright-text {
+    font-size: 0.9rem;
+    opacity: 0.6; /* Muted look is more professional */
+    font-weight: 300;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .footer-full-width {
+        padding: 2rem 0;
+    }
+}
