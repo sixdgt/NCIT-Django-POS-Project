@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'app_pos',
     'accounts',
     'app_sales',
+    'pos_api', # our custom app for api handling
+    'rest_framework', # this is the application name for django rest framework
 ]
 
 MIDDLEWARE = [
@@ -86,6 +88,21 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# must install the mysql driver to use mysql database
+# pip install mysqlclient
+# note must be supported python version and mysql version
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'django_pos_demo', # create database in your mysql server using workbench
+#         'USER': 'root', # default mysql administrative user is `root`
+#         'PASSWORD': '1234', # your mysql user password
+#         'HOST': 'localhost', # if mysql server is running on same machine
+#         'PORT': '3306', # default mysql port number
+#     }
+# }
+
 
 
 # Password validation
